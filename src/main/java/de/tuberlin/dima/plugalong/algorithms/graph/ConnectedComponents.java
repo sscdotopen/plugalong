@@ -2,6 +2,7 @@ package de.tuberlin.dima.plugalong.algorithms.graph;
 
 import de.tuberlin.dima.plugalong.*;
 import de.tuberlin.dima.plugalong.algorithms.GraphBasedFixpointAlgorithm;
+import de.tuberlin.dima.plugalong.errors.ChangedComponentsErrorMeasure;
 import org.apache.mahout.math.DenseVector;
 import org.apache.mahout.math.Matrix;
 import org.apache.mahout.math.SparseMatrix;
@@ -18,6 +19,8 @@ public class ConnectedComponents implements GraphBasedFixpointAlgorithm {
 
   @Override
   public int run(Graph graph, ErrorCollector collector) {
+
+    collector.setErrorMeasure(new ChangedComponentsErrorMeasure());
 
     double[] arr = new double[graph.numVertices()];
     for (int n = 0; n < graph.numVertices(); n++) {
@@ -55,10 +58,11 @@ public class ConnectedComponents implements GraphBasedFixpointAlgorithm {
           numChanged++;
         }
       }
-      System.out.println(iteration + " " + numChanged);
-      //double error = c.minus(cNext).norm(2);
+
       //collector.collect(iteration, numChanged);
       c = stateForNextIteration(iteration, cNext);
+
+      collector.collect(c.clone());
       iteration++;
     }
 

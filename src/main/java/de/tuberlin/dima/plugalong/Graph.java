@@ -74,7 +74,6 @@ public class Graph extends UnmodifiableIterator<Edge> implements Iterable<Edge> 
   @Override
   public Edge next() {
     String line = lines.next();
-    //System.out.println(line);
     String[] parts = SEP.split(line);
     int user = Integer.parseInt(parts[0]);
     int item = Integer.parseInt(parts[1]);

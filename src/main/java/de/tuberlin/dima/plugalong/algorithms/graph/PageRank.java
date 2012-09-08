@@ -6,6 +6,7 @@ import de.tuberlin.dima.plugalong.FastSparseRowMatrix;
 import de.tuberlin.dima.plugalong.Graph;
 import de.tuberlin.dima.plugalong.algorithms.GraphBasedFixpointAlgorithm;
 import de.tuberlin.dima.plugalong.algorithms.GraphBasedFixpointAlgorithm;
+import de.tuberlin.dima.plugalong.errors.NormBasedErrorMeasure;
 import org.apache.mahout.math.DenseVector;
 import org.apache.mahout.math.Matrix;
 import org.apache.mahout.math.SparseMatrix;
@@ -30,7 +31,7 @@ public class PageRank implements GraphBasedFixpointAlgorithm {
   @Override
   public int run(final Graph graph, ErrorCollector collector) {
 
-    collector.setNorm(1);
+    collector.setErrorMeasure(new NormBasedErrorMeasure(1));
 
     Matrix A = new SparseMatrix(graph.numVertices(), graph.numVertices());
 

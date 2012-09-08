@@ -1,6 +1,5 @@
 package de.tuberlin.dima.plugalong.algorithms.graph;
 
-import de.tuberlin.dima.plugalong.algorithms.graph.PageRank;
 import org.apache.mahout.math.Vector;
 import org.apache.mahout.math.list.IntArrayList;
 import org.apache.mahout.math.set.OpenIntHashSet;

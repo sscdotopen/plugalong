@@ -14,8 +14,9 @@ public class GraphPlay {
   public static void main(String[] args) throws IOException {
 
     JFreeChartExecutor executor = new JFreeChartExecutor(
-        new Graph[] { /*Graphs.FACEBOOK,*/ Graphs.YOUTUBE, /*Graphs.GOOGLE_WEB*/ },
+        new Graph[] { Graphs.FACEBOOK, /*Graphs.YOUTUBE,*/ /*Graphs.GOOGLE_WEB*/ },
         new GraphBasedFixpointAlgorithm[] { new PageRank(), new FailingPageRank() });
+    //    new GraphBasedFixpointAlgorithm[] { new ConnectedComponents(), new FailingConnectedComponents() });
 
 //    JFreeChartExecutor executor = new JFreeChartExecutor(
 //        new Graph[] { /*Graphs.ENRON, Graphs.FACEBOOK*/ Graphs.YOUTUBE/*, Graphs.GOOGLE_WEB*/ },

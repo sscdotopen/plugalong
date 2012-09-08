@@ -2,8 +2,7 @@ package de.tuberlin.dima.plugalong;
 
 import com.google.common.collect.Lists;
 import de.tuberlin.dima.plugalong.algorithms.GraphBasedFixpointAlgorithm;
-import de.tuberlin.dima.plugalong.algorithms.RatingDataBasedFixpointAlgorithm;
-import org.apache.mahout.cf.taste.model.DataModel;
+import de.tuberlin.dima.plugalong.errors.ErrorMeasure;
 import org.apache.mahout.math.Vector;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -38,39 +37,19 @@ public class JFreeChartExecutor extends ApplicationFrame {
     setContentPane(chartPanel);
   }
 
-  public JFreeChartExecutor(DataModel[] dataModels, RatingDataBasedFixpointAlgorithm[] algorithms) throws IOException {
-    super("Convergence tests");
-
-    JFreeChartCollector collector = new JFreeChartCollector();
-
-    for (DataModel dataModel : dataModels) {
-      for (RatingDataBasedFixpointAlgorithm nextAlgorithm : algorithms) {
-        collector.register(nextAlgorithm.getTitle());
-        nextAlgorithm.run(dataModel, collector);
-      }
-    }
-
-    JFreeChart chart = ChartFactory.createXYLineChart("Convergence behavior", "iteration", "error",
-        collector.fetchCollectedData(), PlotOrientation.VERTICAL, true, false, false);
-    ChartPanel chartPanel = new ChartPanel(chart, false);
-    chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-    chartPanel.setMouseZoomable(true, false);
-    setContentPane(chartPanel);
-  }
-
   static class JFreeChartCollector implements ErrorCollector {
 
-    private int norm = 2;
+    private ErrorMeasure errorMeasure;
 
-    private final XYSeriesCollection errors = new XYSeriesCollection();;
+    private final XYSeriesCollection errors = new XYSeriesCollection();
     private XYSeries errorsToFixpoint;
     private XYSeries errorsToPrevious;
 
     private List<Vector> states = Lists.newArrayList();
 
     @Override
-    public void setNorm(int norm) {
-      this.norm = norm;
+    public void setErrorMeasure(ErrorMeasure measure) {
+      errorMeasure = measure;
     }
 
     @Override
@@ -83,12 +62,9 @@ public class JFreeChartExecutor extends ApplicationFrame {
       Vector fixpoint = states.get(states.size() - 1);
 
       for (int n = 0; n < states.size(); n++) {
-        double error = states.get(n).minus(fixpoint).norm(norm);
-        errorsToFixpoint.add(n, error);
-
+        errorsToFixpoint.add(n, errorMeasure.error(states.get(n), fixpoint));
         if (n > 0) {
-          error = states.get(n).minus(states.get(n - 1)).norm(norm);
-          errorsToPrevious.add(n, error);
+          errorsToPrevious.add(n, errorMeasure.error(states.get(n), states.get(n - 1)));
         }
       }
     }
