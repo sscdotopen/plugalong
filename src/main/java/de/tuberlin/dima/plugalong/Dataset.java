@@ -8,7 +8,7 @@ import org.apache.mahout.math.function.Functions;
 
 public class Dataset {
 
-  private final TrainingExample[] examples;
+  private final Sample[] samples;
   private final int numFeatures;
 
   private static final DoubleDoubleFunction ABS_MAX = new DoubleDoubleFunction() {
@@ -18,36 +18,36 @@ public class Dataset {
     }
   };
 
-  public Dataset(TrainingExample[] examples, int numFeatures) {
-    this.examples = examples;
+  public Dataset(Sample[] samples, int numFeatures) {
+    this.samples = samples;
     this.numFeatures = numFeatures;
   }
 
   public void normalize() {
     /* center data */
     Vector averages = new DenseVector(numFeatures);
-    for (TrainingExample sample : examples) {
+    for (Sample sample : samples) {
       averages.assign(sample.features(), Functions.PLUS);
     }
-    averages.assign(Functions.DIV, examples.length);
+    averages.assign(Functions.DIV, samples.length);
 
-    for (TrainingExample sample : examples) {
+    for (Sample sample : samples) {
       sample.features().assign(averages, Functions.MINUS);
     }
 
     /* normalize to -1 / 1 */
     Vector absoluteMaxima = new DenseVector(numFeatures);
-    for (TrainingExample sample : examples) {
+    for (Sample sample : samples) {
       absoluteMaxima.assign(sample.features(), ABS_MAX);
     }
 
-    for (TrainingExample sample : examples) {
+    for (Sample sample : samples) {
       sample.features().assign(absoluteMaxima, Functions.DIV);
     }
   }
 
-  public TrainingExample[] examples() {
-    return examples;
+  public Sample[] examples() {
+    return samples;
   }
 
   public int numFeatures() {

@@ -2,7 +2,7 @@ package de.tuberlin.dima.plugalong.algorithms.linearmodels;
 
 import com.google.common.collect.Lists;
 import de.tuberlin.dima.plugalong.Dataset;
-import de.tuberlin.dima.plugalong.TrainingExample;
+import de.tuberlin.dima.plugalong.Sample;
 import org.apache.mahout.math.DenseVector;
 import org.apache.mahout.math.Vector;
 import org.apache.mahout.math.function.Functions;
@@ -13,8 +13,8 @@ import java.util.Random;
 public class RegularizedLogisticRegression {
 
   private final Dataset dataset;
-  private final List<TrainingExample> trainingSamples;
-  private final List<TrainingExample> testSamples;
+  private final List<Sample> trainingSamples;
+  private final List<Sample> testSamples;
 
 
   private final double alpha;
@@ -37,7 +37,7 @@ public class RegularizedLogisticRegression {
     testSamples = Lists.newArrayList();
 
     Random random = new Random();
-    for (TrainingExample sample : dataset.examples()) {
+    for (Sample sample : dataset.examples()) {
       if (random.nextDouble() < trainingRatio) {
         trainingSamples.add(sample);
       } else {
@@ -50,7 +50,7 @@ public class RegularizedLogisticRegression {
   public double accuracy() {
     int numCorrect = 0;
 
-    for (TrainingExample example : testSamples) {
+    for (Sample example : testSamples) {
       double prediction = hypothesis(example.features());
 
       if ((example.label() == 1 && prediction > 0.5) || (example.label() == 0 && prediction <= 0.5)) {
@@ -83,7 +83,7 @@ public class RegularizedLogisticRegression {
 
     Vector gradients = zeros(dataset.numFeatures());
 
-    for (TrainingExample example : trainingSamples) {
+    for (Sample example : trainingSamples) {
       Vector partialGradient = partialGradient(example);
 
       partialGradient.assign(Functions.MULT, alphaDivM);
@@ -98,7 +98,7 @@ public class RegularizedLogisticRegression {
     return new DenseVector(cardinality);
   }
 
-  private Vector partialGradient(TrainingExample example) {
+  private Vector partialGradient(Sample example) {
 
     int m = dataset.examples().length;
     Vector x = example.features();

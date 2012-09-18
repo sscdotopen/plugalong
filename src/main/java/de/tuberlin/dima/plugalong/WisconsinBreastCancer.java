@@ -15,7 +15,7 @@ public class WisconsinBreastCancer {
     FileLineIterator lines =
         new FileLineIterator(new File("/home/ssc/Entwicklung/projects/plugalong/src/main/resources/wdbc.data"));
 
-    TrainingExample[] examples = new TrainingExample[569];
+    Sample[] examples = new Sample[569];
     int example = 0;
 
     while (lines.hasNext()) {
@@ -33,7 +33,7 @@ public class WisconsinBreastCancer {
         features.setQuick(n, feature);
       }
 
-      examples[example++] = new TrainingExample(features, label);
+      examples[example++] = new Sample(features, label);
     }
 
     Dataset dataset = new Dataset(examples, 30);
