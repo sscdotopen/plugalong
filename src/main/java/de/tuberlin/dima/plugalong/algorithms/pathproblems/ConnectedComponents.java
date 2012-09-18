@@ -1,6 +1,8 @@
-package de.tuberlin.dima.plugalong.algorithms.graph;
+package de.tuberlin.dima.plugalong.algorithms.pathproblems;
 
-import de.tuberlin.dima.plugalong.*;
+import de.tuberlin.dima.plugalong.Edge;
+import de.tuberlin.dima.plugalong.ErrorCollector;
+import de.tuberlin.dima.plugalong.Graph;
 import de.tuberlin.dima.plugalong.algorithms.GraphBasedFixpointAlgorithm;
 import de.tuberlin.dima.plugalong.errors.ChangedComponentsErrorMeasure;
 import org.apache.mahout.math.DenseVector;
@@ -65,6 +67,8 @@ public class ConnectedComponents implements GraphBasedFixpointAlgorithm {
       collector.collect(c.clone());
       iteration++;
     }
+
+    collector.markConverged();
 
     return iteration;
   }

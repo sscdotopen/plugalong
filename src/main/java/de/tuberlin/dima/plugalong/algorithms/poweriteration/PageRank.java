@@ -1,4 +1,4 @@
-package de.tuberlin.dima.plugalong.algorithms.graph;
+package de.tuberlin.dima.plugalong.algorithms.poweriteration;
 
 import de.tuberlin.dima.plugalong.Edge;
 import de.tuberlin.dima.plugalong.ErrorCollector;

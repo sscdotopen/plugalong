@@ -1,4 +1,4 @@
-package de.tuberlin.dima.plugalong.algorithms.graph;
+package de.tuberlin.dima.plugalong.algorithms.poweriteration;
 
 import org.apache.mahout.math.Vector;
 import org.apache.mahout.math.list.IntArrayList;
